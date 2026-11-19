@@ -1,0 +1,11 @@
+<script>
+(function(){try{var ok={getmods:"GetMods",nova:"Nova",orbit:"Orbit",pulse:"Pulse",zenith:"Zenith"};
+var b=new URLSearchParams(location.search).get("brand");
+if(b&&ok[b])localStorage.setItem("gmbrand",b);else b=localStorage.getItem("gmbrand");
+if(!b||!ok[b])b="getmods";
+document.documentElement.setAttribute("data-brand",b);
+document.title=document.title.replace(/GetMods/g,ok[b]);
+document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll("form").forEach(function(f){
+if(f.method&&f.method.toLowerCase()==="get"&&f.action.indexOf("search")>-1&&!f.querySelector("[name=brand]")){var i=document.createElement("input");i.type="hidden";i.name="brand";i.value=b;f.appendChild(i);}});});
+}catch(e){}})();
+</script>
