@@ -1,0 +1,3 @@
+
+footer a, footer p, footer span { display: none !important; }
+footer::after { content: "GetMods Search \00B7 Dev by Anas"; display: block; text-align: center; padding: 1.2rem 0; font-size: 0.95rem; color: #6b7280; }
