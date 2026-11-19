@@ -3,6 +3,7 @@ use_default_settings: true
 general:
   instance_name: "GetMods Search"
   enable_metrics: false
+  contact_url: "https://github.com/sahatanas43000-stack/GetMods-Search"
 
 search:
   safe_search: 0
