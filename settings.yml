@@ -1,0 +1,26 @@
+use_default_settings: true
+
+general:
+  instance_name: "GetMods Search"
+  enable_metrics: false
+
+search:
+  safe_search: 0
+  autocomplete: "duckduckgo"
+  formats:
+    - html
+    - json
+
+server:
+  limiter: false
+  image_proxy: true
+  method: "GET"
+
+ui:
+  static_use_hash: true
+  center_alignment: true
+  infinite_scroll: true
+  query_in_title: true
+  default_theme: simple
+  theme_args:
+    simple_style: light
