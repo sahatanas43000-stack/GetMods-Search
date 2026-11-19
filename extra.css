@@ -1,3 +1,6 @@
 
 footer a, footer p, footer span { display: none !important; }
 footer::after { content: "GetMods Search \00B7 Dev by Anas"; display: block; text-align: center; padding: 1.2rem 0; font-size: 0.95rem; color: #6b7280; }
+
+.index .title { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 760 150' width='760' height='150'%3E %3Cg transform='translate%2810%2C10%29 scale%281.2037%29'%3E %3Cpath fill='%231B5E20' d='M26%2C0H82A26%2C26 0 0 1 108%2C26V82A26%2C26 0 0 1 82%2C108H26A26%2C26 0 0 1 0%2C82V26A26%2C26 0 0 1 26%2C0Z'/%3E %3Cpath fill='%232E7D32' d='M26%2C0H82A26%2C26 0 0 1 108%2C26V44H0V26A26%2C26 0 0 1 26%2C0Z'/%3E %3Cpath fill='none' stroke='%23FFFFFF' stroke-width='9' stroke-linecap='round' stroke-linejoin='round' d='M72%2C40A24%2C24 0 1 0 78%2C56L56%2C56'/%3E %3Cpath fill='%23A5D6A7' d='M82%2C20L84.5%2C27.5L92%2C30L84.5%2C32.5L82%2C40L79.5%2C32.5L72%2C30L79.5%2C27.5Z'/%3E %3C/g%3E %3Ctext x='165' y='98' font-family='Roboto%2CHelvetica%2CArial%2Csans-serif' font-size='68' font-weight='700' fill='%231B5E20'%3EGetMods %3Ctspan fill='%2343A047'%3ESearch%3C/tspan%3E%3C/text%3E %3C/svg%3E") 50% / contain no-repeat !important; min-height: 8rem !important; margin: 3rem auto !important; }
+.index h1 { visibility: hidden; }
