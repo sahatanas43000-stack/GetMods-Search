@@ -5,6 +5,7 @@ COPY extra.css /tmp/gm-extra.css
 COPY gm_home.html /tmp/gm_home.html
 COPY gm_brand.html /tmp/gm_brand.html
 COPY gm_patch.py /tmp/gm_patch.py
+COPY gm_bg.jpg /tmp/gm_bg.jpg
 USER root
 RUN find /usr/local/searxng -type f \( -name "searxng.svg" -o -name "favicon.svg" \) -exec cp /tmp/gm-logo.svg {} \; ; \
     find /usr/local/searxng -type f -name "sxng-*.css" -exec sh -c 'cat /tmp/gm-extra.css >> "$1"' _ {} \; ; \
@@ -15,6 +16,7 @@ RUN find /usr/local/searxng -type f \( -name "searxng.svg" -o -name "favicon.svg
       if [ -n "$n" ] && [ "$n" -gt 1 ]; then sed -i "$((n-1))r /tmp/gm_home.html" "$f"; else cat /tmp/gm_home.html >> "$f"; fi; \
     done; \
     python3 /tmp/gm_patch.py; \
+    for dd in $(find /usr/local/searxng -type d -path "*static/themes/simple/img"); do cp /tmp/gm_bg.jpg "$dd/gm_bg.jpg"; echo "GMDBG-BG $dd"; done; \
     find / -name "*.pyc" -path "*searx*" -not -path "/proc/*" -delete 2>/dev/null; \
     true
 USER 977:977

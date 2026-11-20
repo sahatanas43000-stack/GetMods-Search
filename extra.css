@@ -63,3 +63,26 @@ html[data-brand="zenith"] footer::after{content:"Zenith Search \00B7 Dev by Anas
 
 /* results page: no logo badge overlapping the search box */
 html #search_logo, html .search_box > #search_logo, html a#search_logo { display: none !important; }
+
+/* ===== black and white theme with photo background (all brands) ===== */
+html, body { background: #000 !important; color: #ececec !important; }
+body::before { content: ""; position: fixed; left: 0; right: 0; bottom: 0; top: 0; background: url("/static/themes/simple/img/gm_bg.jpg") bottom center / 100% auto no-repeat; opacity: .5; z-index: -1; pointer-events: none; }
+main, #main_index, #main_results, #results, #sidebar, header, #search_header, .search_filters, #categories, nav, .index { background: transparent !important; color: #ececec !important; }
+a, a:visited, .result h3 a, .result h3 a:visited, #categories .category label, .category label { color: #fff !important; }
+.result, article.result, .infobox, .answer, .suggestion, .dialog, .engines-tab, details, #corrections, #answers { background: rgba(16,16,16,.82) !important; color: #e6e6e6 !important; border: 1px solid #3a3a3a !important; }
+.result .content, .result .url_wrapper, .result .url_wrapper a, .result .engines, .result .highlight, .result-content, p, li, label, td, th, h1, h2, h3, span, small, summary { color: #d8d8d8 !important; }
+.result h3, .result h3 a { color: #fff !important; }
+.result .url_wrapper, .result .url_i1, .result .url_o1 { color: #a8a8a8 !important; }
+.search_box, #search_form .search_box, .index .search_box { background: rgba(18,18,18,.92) !important; border: 1px solid #d0d0d0 !important; box-shadow: none !important; }
+.search_box input, #q, input[type=text], input[type=search], select, textarea { background: transparent !important; color: #fff !important; }
+select, option { background: #121212 !important; color: #fff !important; border-color: #555 !important; }
+.search_box svg, #send_search svg, #clear_search svg, #send_search, #clear_search { color: #fff !important; fill: #fff; stroke: #fff; }
+.category input:checked + label, .category input:checked ~ label, #categories .category.selected label { background: #f0f0f0 !important; color: #000 !important; border-color: #f0f0f0 !important; }
+.search_filters, .search_filters > *, #search_filters { border-color: #333 !important; }
+hr, .result, #urls hr { border-color: #333 !important; }
+footer, footer::after { color: #b8b8b8 !important; background: transparent !important; }
+.gm-tile, .gm-tile span, .gm-card-text b, .gm-card-text small { color: #eee !important; }
+.gm-ic { background: rgba(18,18,18,.9) !important; border-color: #666 !important; box-shadow: none !important; }
+.gm-ic svg { stroke: #fff !important; }
+.gm-card { background: rgba(16,16,16,.85) !important; border-color: #555 !important; box-shadow: none !important; }
+.gm-sponsor-label { color: #aaa !important; }
