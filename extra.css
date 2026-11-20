@@ -86,3 +86,8 @@ footer, footer::after { color: #b8b8b8 !important; background: transparent !impo
 .gm-ic svg { stroke: #fff !important; }
 .gm-card { background: rgba(16,16,16,.85) !important; border-color: #555 !important; box-shadow: none !important; }
 .gm-sponsor-label { color: #aaa !important; }
+
+/* readable error / no-results box */
+.dialog-error, .dialog-error * { color: #ffe3e3 !important; }
+.dialog-error { background: rgba(90,20,20,.92) !important; border: 1px solid #a33 !important; }
+.dialog-error a { color: #ffb3b3 !important; text-decoration: underline; }
