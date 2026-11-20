@@ -91,3 +91,12 @@ footer, footer::after { color: #b8b8b8 !important; background: transparent !impo
 .dialog-error, .dialog-error * { color: #ffe3e3 !important; }
 .dialog-error { background: rgba(90,20,20,.92) !important; border: 1px solid #a33 !important; }
 .dialog-error a { color: #ffb3b3 !important; text-decoration: underline; }
+
+/* GM polish v2 */
+#results .result{border-radius:14px !important;box-shadow:0 1px 6px rgba(0,0,0,.08) !important;margin:10px 0 !important;padding:12px 14px !important}
+#results .result h3 a{color:var(--c1) !important;font-weight:600}
+.result .url_wrapper,.result .url_i1{color:#388E3C !important}
+#categories_container .category label,.category label{border-radius:20px !important}
+input#q{border-radius:26px !important}
+#search_form,.search_box{border-radius:26px !important}
+@media(max-width:800px){#results .result{padding:10px 12px !important}.result-images img{border-radius:10px}}
