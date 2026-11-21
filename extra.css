@@ -65,8 +65,9 @@ html[data-brand="zenith"] footer::after{content:"Zenith Search \00B7 Dev by Anas
 html #search_logo, html .search_box > #search_logo, html a#search_logo { display: none !important; }
 
 /* ===== black and white theme with photo background (all brands) ===== */
-html, body { background: #000 !important; color: #ececec !important; }
-body::before { content: ""; position: fixed; left: 0; right: 0; bottom: 0; top: 0; background: url("/static/themes/simple/img/gm_bg.jpg") center center / cover no-repeat; opacity: .55; z-index: -1; pointer-events: none; }
+html { background: #000 !important; }
+body { background: transparent !important; color: #ececec !important; }
+body::before { content: ""; position: fixed; left: 0; right: 0; bottom: 0; top: 0; background: url("/static/themes/simple/img/gm_bg.jpg") center center / cover no-repeat; opacity: .6; z-index: 0; pointer-events: none; }
 main, #main_index, #main_results, #results, #sidebar, header, #search_header, .search_filters, #categories, nav, .index { background: transparent !important; color: #ececec !important; }
 a, a:visited, .result h3 a, .result h3 a:visited, #categories .category label, .category label { color: #fff !important; }
 .result, article.result, .infobox, .answer, .suggestion, .dialog, .engines-tab, details, #corrections, #answers { background: rgba(16,16,16,.82) !important; color: #e6e6e6 !important; border: 1px solid #3a3a3a !important; }
@@ -99,3 +100,5 @@ footer, footer::after { color: #b8b8b8 !important; background: transparent !impo
 input#q{border-radius:26px !important}
 #search_form,.search_box{border-radius:26px !important}
 @media(max-width:800px){#results .result{padding:10px 12px !important}.result-images img{border-radius:10px}}
+
+main, #main_results, #main_index, footer, header, #search_header { position: relative; z-index: 1; }
