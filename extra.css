@@ -118,3 +118,22 @@ html[data-gm="light"] .dialog-error, html[data-gm="light"] .dialog-error * { col
 html[data-gm="light"] .dialog-error { background: rgba(255,230,230,.95) !important; }
 
 html[data-gm="light"] .gm-terms{background:rgba(255,255,255,.9) !important;border-color:#ccc !important}html[data-gm="light"] .gm-terms, html[data-gm="light"] .gm-terms *{color:#222 !important}
+
+/* ===== Google-like polish ===== */
+.gm-strip { margin: 6px 0 14px; padding: 10px 12px 12px; border-radius: 16px; background: rgba(20,20,20,.72); border: 1px solid #333; }
+.gm-strip-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 15px; }
+.gm-strip-h a { font-size: 13px; text-decoration: none; opacity: .85; }
+.gm-strip-r { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.gm-strip-r::-webkit-scrollbar { display: none; }
+.gm-strip-r a { flex: none; display: block; }
+.gm-strip-r img { height: 118px; width: auto; min-width: 70px; max-width: 220px; object-fit: cover; border-radius: 12px; background: #222; display: block; }
+img.gm-fav { width: 18px; height: 18px; border-radius: 4px; vertical-align: middle; margin-right: 8px; background: #fff; padding: 1px; }
+.result .url_wrapper { display: flex; align-items: center; flex-wrap: wrap; }
+.infobox img, #sidebar .infobox img, .infobox .infobox-img { display: block; width: 100% !important; max-width: 100% !important; height: auto !important; max-height: 260px; object-fit: cover; border-radius: 14px; margin: 0 auto 10px; }
+.infobox { border-radius: 16px !important; overflow: hidden; }
+.infobox h2, .infobox .title { font-size: 1.5rem !important; font-weight: 700 !important; }
+.result strong, .result mark, .result .highlight, .result b, .result em { color: inherit !important; background: none !important; font-weight: 700 !important; }
+.result .thumbnail, .result img.thumbnail { border-radius: 12px !important; }
+html[data-gm="light"] .gm-strip { background: rgba(255,255,255,.9) !important; border-color: #ccc !important; }
+html[data-gm="light"] .gm-strip * { color: #111 !important; }
+html[data-gm="light"] .result strong, html[data-gm="light"] .result mark, html[data-gm="light"] .result b { color: #000 !important; }

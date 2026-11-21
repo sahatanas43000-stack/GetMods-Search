@@ -9,3 +9,45 @@ document.addEventListener("DOMContentLoaded",function(){document.querySelectorAl
 if(f.method&&f.method.toLowerCase()==="get"&&f.action.indexOf("search")>-1&&!f.querySelector("[name=brand]")){var i=document.createElement("input");i.type="hidden";i.name="brand";i.value=b;f.appendChild(i);}});});
 }catch(e){}})();
 </script>
+<script>
+(function(){
+function ready(f){if(document.readyState!=='loading')f();else document.addEventListener('DOMContentLoaded',f);}
+ready(function(){
+  var res=document.getElementById('results')||document.getElementById('main_results');
+  if(!res) return;
+  var p=new URLSearchParams(location.search), q=p.get('q'); if(!q) return;
+  // Google-like details: open the Info panel
+  document.querySelectorAll('#sidebar details, #results details').forEach(function(d){var s=d.querySelector('summary');if(s&&/^\s*Info\s*$/i.test(s.textContent))d.open=true;});
+  // favicons
+  function icons(root){
+    (root||document).querySelectorAll('article.result').forEach(function(a){
+      if(a.getAttribute('data-gmi'))return; a.setAttribute('data-gmi','1');
+      var l=a.querySelector('a.url_header')||a.querySelector('a[href^="http"]'); if(!l)return;
+      var h; try{h=new URL(l.href).hostname;}catch(e){return;}
+      var im=document.createElement('img'); im.className='gm-fav'; im.alt=''; im.width=18; im.height=18; im.loading='lazy'; im.referrerPolicy='no-referrer';
+      im.src='https://icons.duckduckgo.com/ip3/'+h+'.ico'; im.onerror=function(){im.style.display='none';};
+      var t=a.querySelector('.url_wrapper'); (t||a).insertBefore(im,(t||a).firstChild);
+    });
+  }
+  icons();
+  try{new MutationObserver(function(){icons();}).observe(res,{childList:true,subtree:true});}catch(e){}
+  // image strip (general results only)
+  var cat=p.get('categories'); if(cat && cat!=='general') return;
+  if(document.querySelector('.result-images, .gm-strip')) return;
+  var box=document.createElement('div'); box.className='gm-strip';
+  box.innerHTML='<div class="gm-strip-h"><b>Images</b><a href="/search?q='+encodeURIComponent(q)+'&categories=images">More images &rsaquo;</a></div><div class="gm-strip-r"></div>';
+  var row=box.querySelector('.gm-strip-r');
+  var anchor=document.getElementById('urls')||res.firstChild;
+  res.insertBefore(box,anchor);
+  fetch('/search?q='+encodeURIComponent(q)+'&categories=images&format=json').then(function(r){return r.json();}).then(function(j){
+    var n=0;(j.results||[]).forEach(function(x){
+      var s=x.thumbnail_src||x.thumbnail||x.img_src; if(!s||n>=14)return; n++;
+      var a=document.createElement('a'); a.href=x.url||x.img_src; a.target='_self';
+      var im=document.createElement('img'); im.src=s; im.loading='lazy'; im.referrerPolicy='no-referrer'; im.alt=x.title||''; im.onerror=function(){a.style.display='none';};
+      a.appendChild(im); row.appendChild(a);
+    });
+    if(!n) box.style.display='none';
+  }).catch(function(){box.style.display='none';});
+});
+})();
+</script>

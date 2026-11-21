@@ -15,8 +15,10 @@ for n in sorted(names):
 for n in on:
     if n in names:
         out += ['  - name: ' + n, '    disabled: false']
+        if n in ('wikipedia', 'wikidata', 'bing images', 'qwant images'):
+            out += ['    timeout: 7.0']
         applied_on.append(n)
-out += ['', 'outgoing:', '  request_timeout: 3.5', '  max_request_timeout: 6.0', '  pool_connections: 100', '  pool_maxsize: 20', '  enable_http2: true', '']
+out += ['', 'outgoing:', '  request_timeout: 3.5', '  max_request_timeout: 8.0', '  pool_connections: 100', '  pool_maxsize: 20', '  enable_http2: true', '']
 open('/etc/searxng/settings.yml', 'a', encoding='utf-8').write('\n'.join(out))
 print('GM engines ON :', applied_on)
 print('GM engines OFF:', applied_off)
