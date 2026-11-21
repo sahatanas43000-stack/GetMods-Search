@@ -1,0 +1,11 @@
+Copyright (c) 2026 Anas (Dev by Anas). All rights reserved.
+
+This license covers ONLY the files added by GetMods in this repository (branding, logos, images,
+CSS, HTML snippets, scripts and configuration): logo.svg, icon.svg, gm_bg.jpg, gm_bg_light.jpg,
+extra.css, gm_home.html, gm_brand.html, gm_patch.py, gm_engines.py, settings.yml, Dockerfile.
+
+You may not copy, redistribute, sell or rebrand these files, or use the GetMods name, logo or
+photos, without written permission from the author.
+
+SearXNG itself (pulled in by the Dockerfile) is a separate project licensed under AGPL-3.0 and
+remains under its own license.

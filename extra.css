@@ -124,3 +124,5 @@ html[data-gm="light"] .search_filters, html[data-gm="light"] hr, html[data-gm="l
 html[data-gm="light"] footer, html[data-gm="light"] footer::after { color: #444 !important; }
 html[data-gm="light"] .dialog-error, html[data-gm="light"] .dialog-error * { color: #7a1010 !important; }
 html[data-gm="light"] .dialog-error { background: rgba(255,230,230,.95) !important; }
+
+html[data-gm="light"] .gm-terms{background:rgba(255,255,255,.9) !important;border-color:#ccc !important}html[data-gm="light"] .gm-terms, html[data-gm="light"] .gm-terms *{color:#222 !important}
