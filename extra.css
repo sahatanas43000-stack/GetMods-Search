@@ -227,3 +227,32 @@ html body::after { content: ""; position: fixed; inset: 0; z-index: 0; pointer-e
 #sidebar #apis, #apis, #search_url, #suggestions, #engines_msg,
 #results .suggestions, #sidebar .engines-timing, details.sidebar-collapsible,
 form[action$="/search"] ~ #apis, #results ~ #apis { display: none !important; }
+
+
+/* ===================== TWO-COLOUR v4: peach + blue only ===================== */
+html{--u:#9AA0A6;--hl:#F3E9E4;--tv:#8AB4F8}
+html[data-gm="light"]{--u:#5F6368;--hl:#1F1F1F;--tv:#1A0DAB}
+/* result cards: plain, no coloured edge */
+html body #results#results .result, html body #results#results article.result { border-left: 1px solid var(--bd) !important; box-shadow: none !important; }
+html body #results#results .result .url_wrapper, html body #results#results .result .url_wrapper *, html body #results#results .result .url_wrapper a { color: var(--u) !important; }
+/* category chips: one blue */
+html body :is(#categories,#categories_container,.search_filters) .category.category.category:nth-of-type(n){--cc:#1A73E8}
+html body :is(#categories,#categories_container,.search_filters) .category.category.category label { border-color: var(--bd) !important; }
+html body :is(#categories,#categories_container,.search_filters) .category.category.category label::before { display: none !important; }
+html body :is(#categories,#categories_container,.search_filters) .category.category.category input:checked + label,
+html body :is(#categories,#categories_container,.search_filters) .category.category.category input:checked ~ label { background: #1A73E8 !important; border-color: #1A73E8 !important; color: #fff !important; }
+/* search button: solid blue */
+html body :is(#search_form,#search,form) #send_search#send_search { background: #1A73E8 !important; }
+/* info panel, strip, cards, pagination, tiles */
+html body .infobox.infobox, html body #sidebar .infobox { border-top: 4px solid #1A73E8 !important; }
+html body .infobox h2, html body .infobox .title, html body .infobox h2 *, html[data-gm="light"] body .infobox h2, html[data-gm="light"] body .infobox .title { color: var(--fg) !important; }
+html body .gm-strip.gm-strip { border-top: 4px solid #1A73E8 !important; }
+html body .gm-card.gm-card { border-left: 5px solid #1A73E8 !important; }
+html body form.next_page button, html body form.previous_page button, html body #pagination button, html body .pagination button { background: #1A73E8 !important; }
+html body .gm-tile.gm-tile:nth-child(n) .gm-ic svg { stroke: #1A73E8 !important; }
+html body::after { background: none !important; }
+
+/* logo inside the search box (left side) */
+html body .search_box.search_box { position: relative !important; }
+html body .search_box.search_box::before { content: ""; position: absolute; left: 12px; top: 50%; width: 30px; height: 30px; transform: translateY(-50%); border-radius: 9px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='512' height='512'%3E%3Crect width='512' height='512' rx='116' fill='%230A0A0A'/%3E%3Cpath transform='translate(-14 -16)' fill='none' stroke='%23FFFFFF' stroke-width='62' stroke-linecap='round' stroke-linejoin='round' d='M352%2C168A130%2C130 0 1 0 368%2C300L368%2C262L268%2C262'/%3E%3Cpath fill='none' stroke='%232ED573' stroke-width='22' stroke-linecap='round' d='M92%2C408Q256%2C452 420%2C388'/%3E%3Cpath fill='%2369F0AE' d='M404%2C92L412%2C114L434%2C122L412%2C130L404%2C152L396%2C130L374%2C122L396%2C114Z'/%3E%3C/svg%3E") center / contain no-repeat; pointer-events: none; z-index: 3; }
+html body #q#q, html body .search_box.search_box input[name="q"] { padding-left: 54px !important; }
