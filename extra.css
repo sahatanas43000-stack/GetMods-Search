@@ -221,3 +221,9 @@ html body .gm-tile.gm-tile, html body .gm-tile.gm-tile span { color: var(--fg) !
 /* soft colourful glow behind the page (very light) */
 html body::after { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background: radial-gradient(60vmax 40vmax at 0% 0%, rgba(234,67,53,.10), transparent 60%), radial-gradient(55vmax 40vmax at 100% 100%, rgba(66,133,244,.10), transparent 60%); }
+
+/* HIDE STATS BOXES v1: only results */
+#sidebar details, #sidebar .sidebar-collapsible, #sidebar #suggestions, #sidebar #engines_msg,
+#sidebar #apis, #apis, #search_url, #suggestions, #engines_msg,
+#results .suggestions, #sidebar .engines-timing, details.sidebar-collapsible,
+form[action$="/search"] ~ #apis, #results ~ #apis { display: none !important; }
