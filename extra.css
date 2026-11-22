@@ -137,3 +137,87 @@ img.gm-fav { width: 18px; height: 18px; border-radius: 4px; vertical-align: midd
 html[data-gm="light"] .gm-strip { background: rgba(255,255,255,.9) !important; border-color: #ccc !important; }
 html[data-gm="light"] .gm-strip * { color: #111 !important; }
 html[data-gm="light"] .result strong, html[data-gm="light"] .result mark, html[data-gm="light"] .result b { color: #000 !important; }
+
+/* ===================== COLOUR THEME v3 (warm peach + Google-style accents) ===================== */
+html{--bg1:#1A1311;--bg2:#241B18;--pill:#2D2320;--bd:#3A2D28;--t:#8AB4F8;--tv:#C58AF9;--u:#81C995;--s:#C4C7CC;--hl:#FFB74D;--fg:#F3E9E4}
+html[data-gm="light"]{--bg1:#FCE8DE;--bg2:#FFF9F6;--pill:#F4D8CB;--bd:#EBD0C3;--t:#1A0DAB;--tv:#681DA8;--u:#188038;--s:#4D5156;--hl:#D93025;--fg:#1F1F1F}
+
+html, html[data-gm="light"] { background: linear-gradient(180deg, var(--bg1), var(--bg1)) !important; }
+html body { color: var(--fg) !important; }
+
+/* result cards with a coloured edge */
+html body #results#results .result, html body #results#results article.result {
+  background: var(--bg2) !important; border: 1px solid var(--bd) !important; border-left: 5px solid var(--acc, #4285F4) !important;
+  border-radius: 16px !important; box-shadow: 0 2px 10px rgba(0,0,0,.10) !important; }
+html body #results#results article.result:nth-of-type(6n+1){--acc:#EA4335}
+html body #results#results article.result:nth-of-type(6n+2){--acc:#4285F4}
+html body #results#results article.result:nth-of-type(6n+3){--acc:#FBBC05}
+html body #results#results article.result:nth-of-type(6n+4){--acc:#34A853}
+html body #results#results article.result:nth-of-type(6n+5){--acc:#A142F4}
+html body #results#results article.result:nth-of-type(6n+6){--acc:#FF6D00}
+
+/* titles / urls / snippets */
+html body #results#results .result h3 a, html body #results#results .result h3 a * { color: var(--t) !important; font-weight: 600 !important; }
+html body #results#results .result h3 a:visited { color: var(--tv) !important; }
+html body #results#results .result .url_wrapper, html body #results#results .result .url_wrapper *, html body #results#results .result .url_wrapper a { color: var(--u) !important; }
+html body #results#results .result .content, html body #results#results .result .content *, html body #results#results .result p { color: var(--s) !important; }
+html body #results#results .result strong, html body #results#results .result mark, html body #results#results .result b, html body #results#results .result em, html body #results#results .result .highlight { color: var(--hl) !important; font-weight: 700 !important; background: none !important; }
+html body #results#results .result .engines, html body #results#results .result .engines * { color: #9aa0a6 !important; }
+
+/* category chips: each one has its own colour */
+html body :is(#categories,#categories_container,.search_filters) .category.category.category { --cc:#4285F4; }
+html body :is(#categories,#categories_container,.search_filters) .category:nth-of-type(8n+1){--cc:#4285F4}
+html body :is(#categories,#categories_container,.search_filters) .category:nth-of-type(8n+2){--cc:#EA4335}
+html body :is(#categories,#categories_container,.search_filters) .category:nth-of-type(8n+3){--cc:#34A853}
+html body :is(#categories,#categories_container,.search_filters) .category:nth-of-type(8n+4){--cc:#FF6D00}
+html body :is(#categories,#categories_container,.search_filters) .category:nth-of-type(8n+5){--cc:#A142F4}
+html body :is(#categories,#categories_container,.search_filters) .category:nth-of-type(8n+6){--cc:#00ACC1}
+html body :is(#categories,#categories_container,.search_filters) .category:nth-of-type(8n+7){--cc:#E91E63}
+html body :is(#categories,#categories_container,.search_filters) .category:nth-of-type(8n+8){--cc:#FBBC05}
+html body :is(#categories,#categories_container,.search_filters) .category.category.category label { background: var(--pill) !important; color: var(--fg) !important; border: 1px solid var(--cc) !important; border-radius: 999px !important; }
+html body :is(#categories,#categories_container,.search_filters) .category.category.category label::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--cc); margin-right: 7px; vertical-align: middle; }
+html body :is(#categories,#categories_container,.search_filters) .category.category.category input:checked + label,
+html body :is(#categories,#categories_container,.search_filters) .category.category.category input:checked ~ label { background: var(--cc) !important; color: #fff !important; border-color: var(--cc) !important; }
+html body :is(#categories,#categories_container,.search_filters) .category.category.category input:checked + label::before { background: #fff; }
+
+/* search box: peach pill with a colourful focus ring and rainbow search button */
+html body :is(#search_form,#search,form) .search_box.search_box, html body :is(#search_form,#search,form) .index .search_box.search_box {
+  background: var(--pill) !important; border: 2px solid transparent !important; box-shadow: none !important; }
+html body :is(#search_form,#search,form) .search_box.search_box:focus-within { border-color: #4285F4 !important; box-shadow: 0 0 0 3px rgba(66,133,244,.25) !important; }
+html body :is(#search_form,#search,form) .search_box.search_box input, html body #q#q { color: var(--fg) !important; background: transparent !important; }
+html body :is(#search_form,#search,form) #send_search#send_search { background: linear-gradient(135deg,#EA4335,#FBBC05,#34A853,#4285F4) !important; border-radius: 999px !important; }
+html body :is(#search_form,#search,form) #send_search#send_search svg { color: #fff !important; stroke: #fff !important; }
+
+/* info panel */
+html body .infobox.infobox, html body #sidebar .infobox { background: var(--bg2) !important; border: 1px solid var(--bd) !important; border-top: 6px solid #4285F4 !important; border-radius: 18px !important; }
+html body .infobox h2, html body .infobox .title, html body .infobox h2 * { color: #EA4335 !important; }
+html body .infobox a { color: var(--t) !important; }
+html body .infobox, html body .infobox p, html body .infobox span, html body .infobox td { color: var(--s) !important; }
+html[data-gm="light"] body .infobox h2, html[data-gm="light"] body .infobox .title { color: #C5221F !important; }
+
+/* suggestions, answers, images strip */
+html body .suggestion.suggestion, html body #suggestions .suggestion, html body #answers, html body .answer { background: var(--pill) !important; border: 1px solid var(--bd) !important; border-radius: 14px !important; }
+html body .gm-strip.gm-strip { background: var(--bg2) !important; border: 1px solid var(--bd) !important; border-top: 4px solid #34A853 !important; }
+html body .gm-strip *, html body .gm-strip-h a { color: var(--t) !important; }
+html body .gm-strip-h b, html body .gm-strip-h span { color: var(--fg) !important; }
+
+/* pagination */
+html body form.next_page button, html body form.previous_page button, html body #pagination button, html body .pagination button {
+  background: linear-gradient(135deg,#4285F4,#A142F4) !important; color: #fff !important; border: 0 !important; border-radius: 999px !important; padding: .7rem 1.4rem !important; font-weight: 600 !important; }
+
+/* home tiles & cards: coloured icons */
+html body .gm-tile.gm-tile:nth-child(6n+1) .gm-ic svg{stroke:#EA4335 !important}
+html body .gm-tile.gm-tile:nth-child(6n+2) .gm-ic svg{stroke:#4285F4 !important}
+html body .gm-tile.gm-tile:nth-child(6n+3) .gm-ic svg{stroke:#FBBC05 !important}
+html body .gm-tile.gm-tile:nth-child(6n+4) .gm-ic svg{stroke:#34A853 !important}
+html body .gm-tile.gm-tile:nth-child(6n+5) .gm-ic svg{stroke:#A142F4 !important}
+html body .gm-tile.gm-tile:nth-child(6n+6) .gm-ic svg{stroke:#FF6D00 !important}
+html body .gm-ic.gm-ic { background: var(--pill) !important; border-color: var(--bd) !important; }
+html body .gm-card.gm-card { background: var(--bg2) !important; border: 1px solid var(--bd) !important; border-left: 5px solid #A142F4 !important; }
+html body .gm-card.gm-card .gm-card-text b { color: var(--t) !important; }
+html body .gm-card.gm-card .gm-card-text small { color: var(--s) !important; }
+html body .gm-tile.gm-tile, html body .gm-tile.gm-tile span { color: var(--fg) !important; }
+
+/* soft colourful glow behind the page (very light) */
+html body::after { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(60vmax 40vmax at 0% 0%, rgba(234,67,53,.10), transparent 60%), radial-gradient(55vmax 40vmax at 100% 100%, rgba(66,133,244,.10), transparent 60%); }
