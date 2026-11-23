@@ -256,3 +256,7 @@ html body::after { background: none !important; }
 html body .search_box.search_box { position: relative !important; }
 html body .search_box.search_box::before { content: ""; position: absolute; left: 12px; top: 50%; width: 30px; height: 30px; transform: translateY(-50%); border-radius: 9px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='512' height='512'%3E%3Crect width='512' height='512' rx='116' fill='%230A0A0A'/%3E%3Cpath transform='translate(-14 -16)' fill='none' stroke='%23FFFFFF' stroke-width='62' stroke-linecap='round' stroke-linejoin='round' d='M352%2C168A130%2C130 0 1 0 368%2C300L368%2C262L268%2C262'/%3E%3Cpath fill='none' stroke='%232ED573' stroke-width='22' stroke-linecap='round' d='M92%2C408Q256%2C452 420%2C388'/%3E%3Cpath fill='%2369F0AE' d='M404%2C92L412%2C114L434%2C122L412%2C130L404%2C152L396%2C130L374%2C122L396%2C114Z'/%3E%3C/svg%3E") center / contain no-repeat; pointer-events: none; z-index: 3; }
 html body #q#q, html body .search_box.search_box input[name="q"] { padding-left: 54px !important; }
+
+/* BUTTONS SAFETY v1: make sure nothing sits on top of controls and taps are instant */
+#categories, #categories_container, .search_filters, #search_header, #search_form, .search_box, button, select, .category label, #send_search, #clear_search { pointer-events: auto !important; touch-action: manipulation; position: relative; z-index: 5; }
+.category label { cursor: pointer; -webkit-tap-highlight-color: transparent; }
