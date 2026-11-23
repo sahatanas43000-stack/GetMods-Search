@@ -14,7 +14,7 @@ search:
 
 server:
   limiter: false
-  image_proxy: true
+  image_proxy: false
   method: "GET"
 
 ui:
@@ -25,3 +25,10 @@ ui:
   default_theme: simple
   theme_args:
     simple_style: light
+
+outgoing:
+  request_timeout: 3.0
+  max_request_timeout: 6.0
+  pool_connections: 100
+  pool_maxsize: 20
+  enable_http2: true
