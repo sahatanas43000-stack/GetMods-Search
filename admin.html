@@ -17,7 +17,7 @@ button.g{background:#eee;color:#202124}button.r{background:#d93025}button:disabl
 .sw{width:46px;height:26px;appearance:none;background:#bbb;border-radius:20px;position:relative;cursor:pointer;border:0;padding:0}
 .sw:checked{background:#1a73e8}.sw:before{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s}.sw:checked:before{left:23px}
 .item{border-bottom:1px solid #eee;padding:10px 0}.meta{font-size:12px;color:#777}
-pre{white-space:pre-wrap;word-break:break-word;background:#f6f6f6;border-radius:8px;padding:8px;font-size:12px;max-height:260px;overflow:auto}
+pre{white-space:pre-wrap;word-break:break-word;background:#f6f6f6;border-radius:8px;padding:8px;font-size:12px;max-height:420px;overflow:auto;-webkit-user-select:text;user-select:text}button.cp{margin-right:8px}
 .msg{padding:8px 12px;border-radius:10px;background:#e6f4ea;color:#137333;margin-bottom:12px;display:none}.msg.e{background:#fce8e6;color:#c5221f}
 </style></head><body>
 <header><b>GetMods Admin</b><span id="who"></span></header>
@@ -87,7 +87,10 @@ async function loadCfg(){
 async function upd(o,ok){o.updated_at=new Date().toISOString();const {error}=await sb.from("app_config").update(o).eq("id",1);if(error)say(error.message,1);else{say(ok);loadCfg();}}
 async function loadList(table,el,title,fmt){
   const {data,error}=await sb.from(table).select("*").order("created_at",{ascending:false}).limit(100);if(error){say(error.message,1);return;}
-  $(el).innerHTML=`<div class="card"><h2>${title} (${data.length})</h2>`+(data.length?data.map(r=>`<div class="item">${fmt(r)}<button class="r" data-id="${r.id}" data-t="${table}">Delete</button></div>`).join(""):"<p class='meta'>Nothing yet.</p>")+"</div>";
+  $(el).innerHTML=`<div class="card"><h2>${title} (${data.length})</h2>`+(data.length?data.map(r=>`<div class="item">${fmt(r)}<button class="g cp" data-i="${data.indexOf(r)}">Copy</button><button class="r" data-id="${r.id}" data-t="${table}">Delete</button></div>`).join(""):"<p class='meta'>Nothing yet.</p>")+"</div>";
+  $(el).querySelectorAll("button.cp").forEach(b=>b.onclick=()=>{const r=data[b.dataset.i];const txt=(r.report||r.message||"")+"";const done=()=>{b.textContent="Copied \u2713";setTimeout(()=>b.textContent="Copy",1500);};
+    if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(txt).then(done,()=>fb());else fb();
+    function fb(){const t=document.createElement("textarea");t.value=txt;t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();try{document.execCommand("copy");done();}catch(e){say("Copy failed",1);}t.remove();}});
   $(el).querySelectorAll("button.r").forEach(b=>b.onclick=async()=>{await sb.from(b.dataset.t).delete().eq("id",b.dataset.id);loadAll();});
 }
 boot();
