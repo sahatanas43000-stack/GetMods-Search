@@ -17,7 +17,7 @@ button.g{background:#eee;color:#202124}button.r{background:#d93025}button:disabl
 .sw{width:46px;height:26px;appearance:none;background:#bbb;border-radius:20px;position:relative;cursor:pointer;border:0;padding:0}
 .sw:checked{background:#1a73e8}.sw:before{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s}.sw:checked:before{left:23px}
 .item{border-bottom:1px solid #eee;padding:10px 0}.meta{font-size:12px;color:#777}
-pre{white-space:pre-wrap;word-break:break-word;background:#f6f6f6;border-radius:8px;padding:8px;font-size:12px;max-height:420px;overflow:auto;-webkit-user-select:text;user-select:text}button.cp{margin-right:8px}
+pre{white-space:pre-wrap;word-break:break-word;background:#f6f6f6;border-radius:8px;padding:8px;font-size:12px;max-height:420px;overflow:auto;-webkit-user-select:text;user-select:text}button.cp{margin-right:8px}.sum{background:#fff4e5;border:1px solid #f3d3a8;border-radius:10px;padding:10px;margin:8px 0;font-size:13px;line-height:1.5}.sum b{color:#202124}.cnt{display:inline-block;background:#d93025;color:#fff;border-radius:10px;padding:0 8px;font-size:12px;margin-left:6px}details summary{cursor:pointer;color:#1a73e8;margin:6px 0}
 .msg{padding:8px 12px;border-radius:10px;background:#e6f4ea;color:#137333;margin-bottom:12px;display:none}.msg.e{background:#fce8e6;color:#c5221f}
 </style></head><body>
 <header><b>GetMods Admin</b><span id="who"></span></header>
@@ -64,7 +64,21 @@ $("bout").onclick=$("bout1").onclick=async()=>{await sb.auth.signOut();boot();};
 const TABS=[["t_notice","Notice & Update"],["t_ads","Ads"],["t_crash","Crashes"],["t_fb","Feedback"]];
 function tabs(){$("tabs").innerHTML="";TABS.forEach(([id,n],i)=>{const b=document.createElement("button");b.textContent=n;b.className=i===tabs.cur?"on":"";b.onclick=()=>{tabs.cur=i;tabs();};$("tabs").appendChild(b);document.getElementById(id).style.display=i===tabs.cur?"block":"none";});}
 tabs.cur=0;
-async function loadAll(){tabs();await loadCfg();await loadList("crash_reports","t_crash","Crash reports",r=>`<div class="meta">${esc(new Date(r.created_at).toLocaleString())} · v${esc(r.version)} · ${esc(r.device)}</div><pre>${esc(r.report)}</pre>`);await loadList("feedback","t_fb","Feedback",r=>`<div class="meta">${esc(new Date(r.created_at).toLocaleString())} · v${esc(r.version)}${r.contact?" · "+esc(r.contact):""}</div><div>${esc(r.message)}</div>`);}
+
+const HINTS={ArrayIndexOutOfBoundsException:"A list was read past its end (wrong index).",IndexOutOfBoundsException:"A list was read past its end (wrong index).",NullPointerException:"Something that was empty (null) was used.",ClassCastException:"A view or object was treated as the wrong type.",IllegalStateException:"The app did something at the wrong time (e.g. view or activity not ready).",IllegalArgumentException:"A wrong value was passed to a function.",OutOfMemoryError:"The phone ran out of memory (probably a big image or too many tabs).",NumberFormatException:"Text that is not a number was converted to a number.",StackOverflowError:"A function kept calling itself forever.",SecurityException:"A permission is missing.",BadTokenException:"A dialog was shown after the screen was closed.",ActivityNotFoundException:"No app was found to open a link or file.",NetworkOnMainThreadException:"A network call ran on the main thread.",ConcurrentModificationException:"A list was changed while it was being read."};
+function parseCrash(t){t=t||"";const L=t.split("\n");let ex="",top="",screen="";
+  for(const l of L){if(!screen&&/^Screen:/.test(l))screen=l.slice(7).trim();
+    if(!ex&&/^[\w.$]+(Exception|Error)\b/.test(l.trim()))ex=l.trim();
+    if(!top){const m=l.match(/at (com\.getmods\.browser\.[^\s(]+)\(([^)]+)\)/);if(m&&!/\$\$|lambda\$/.test(m[1])&&!/:0$/.test(m[2]))top=m[1].replace("com.getmods.browser.","")+" ("+m[2]+")";}}
+  const type=(ex.split(":")[0]||"").split(".").pop();
+  const hint=HINTS[type]||"";
+  return {ex,top,screen,type,hint,key:type+"|"+top};}
+let CR_COUNT={};
+function crashFmt(r){const p=parseCrash(r.report);const n=CR_COUNT[p.key]||1;
+  return `<div class="meta">${esc(new Date(r.created_at).toLocaleString())} · v${esc(r.version)} · ${esc(r.device)}${n>1?`<span class="cnt">${n} times</span>`:""}</div>
+  <div class="sum"><b>What:</b> ${esc(p.ex||"Unknown error")}<br>${p.hint?`<b>Meaning:</b> ${esc(p.hint)}<br>`:""}<b>Where in code:</b> ${esc(p.top||"not found")}<br>${p.screen?`<b>Screen:</b> ${esc(p.screen)}`:""}</div>
+  <details><summary>Full report</summary><pre>${esc(r.report)}</pre></details>`;}
+async function loadAll(){tabs();await loadCfg();await loadList("crash_reports","t_crash","Crash reports",crashFmt);await loadList("feedback","t_fb","Feedback",r=>`<div class="meta">${esc(new Date(r.created_at).toLocaleString())} · v${esc(r.version)}${r.contact?" · "+esc(r.contact):""}</div><div>${esc(r.message)}</div>`);}
 async function loadCfg(){
   const {data,error}=await sb.from("app_config").select("*").eq("id",1).single();if(error){say(error.message,1);return;}cfg=data;
   $("t_notice").innerHTML=`<div class="card"><h2>Notice to all users</h2>
@@ -87,6 +101,7 @@ async function loadCfg(){
 async function upd(o,ok){o.updated_at=new Date().toISOString();const {error}=await sb.from("app_config").update(o).eq("id",1);if(error)say(error.message,1);else{say(ok);loadCfg();}}
 async function loadList(table,el,title,fmt){
   const {data,error}=await sb.from(table).select("*").order("created_at",{ascending:false}).limit(100);if(error){say(error.message,1);return;}
+  if(table==="crash_reports"){CR_COUNT={};data.forEach(r=>{const k=parseCrash(r.report).key;CR_COUNT[k]=(CR_COUNT[k]||0)+1;});}
   $(el).innerHTML=`<div class="card"><h2>${title} (${data.length})</h2>`+(data.length?data.map(r=>`<div class="item">${fmt(r)}<button class="g cp" data-i="${data.indexOf(r)}">Copy</button><button class="r" data-id="${r.id}" data-t="${table}">Delete</button></div>`).join(""):"<p class='meta'>Nothing yet.</p>")+"</div>";
   $(el).querySelectorAll("button.cp").forEach(b=>b.onclick=()=>{const r=data[b.dataset.i];const txt=(r.report||r.message||"")+"";const done=()=>{b.textContent="Copied \u2713";setTimeout(()=>b.textContent="Copy",1500);};
     if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(txt).then(done,()=>fb());else fb();
