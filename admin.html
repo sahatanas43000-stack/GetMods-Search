@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>GetMods Admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font:15px/1.4 system-ui,sans-serif;background:#faf0ea;color:#202124}
+header{background:#1f1f1f;color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+header b{font-size:17px}main{max-width:720px;margin:0 auto;padding:14px}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px #0002}
+h2{margin:0 0 10px;font-size:16px}label{display:block;font-size:13px;color:#5f6368;margin:10px 0 4px}
+input,textarea{width:100%;padding:10px 12px;border:1px solid #dadce0;border-radius:10px;font:inherit;background:#fff}
+textarea{min-height:80px}button{border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:600;background:#1a73e8;color:#fff;cursor:pointer;margin-top:12px}
+button.g{background:#eee;color:#202124}button.r{background:#d93025}button:disabled{opacity:.5}
+.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:14px}.tabs button{margin:0;background:#fff;color:#202124;border:1px solid #dadce0;white-space:nowrap}
+.tabs button.on{background:#e3e8fd;border-color:#e3e8fd;color:#1a73e8}
+.row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
+.sw{width:46px;height:26px;appearance:none;background:#bbb;border-radius:20px;position:relative;cursor:pointer;border:0;padding:0}
+.sw:checked{background:#1a73e8}.sw:before{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s}.sw:checked:before{left:23px}
+.item{border-bottom:1px solid #eee;padding:10px 0}.meta{font-size:12px;color:#777}
+pre{white-space:pre-wrap;word-break:break-word;background:#f6f6f6;border-radius:8px;padding:8px;font-size:12px;max-height:260px;overflow:auto}
+.msg{padding:8px 12px;border-radius:10px;background:#e6f4ea;color:#137333;margin-bottom:12px;display:none}.msg.e{background:#fce8e6;color:#c5221f}
+</style></head><body>
+<header><b>GetMods Admin</b><span id="who"></span></header>
+<main>
+<div id="msg" class="msg"></div>
+<div id="login" class="card" style="display:none">
+<h2>Sign in</h2>
+<label>Email</label><input id="em" type="email" autocomplete="username">
+<label>Password</label><input id="pw" type="password" autocomplete="current-password">
+<button id="bin">Sign in</button> <button id="bup" class="g">Create account</button>
+<p class="meta">The first account to press "Become admin" after signing in becomes the only admin.</p>
+</div>
+<div id="claim" class="card" style="display:none">
+<h2>No admin yet</h2><p>You are signed in but not an admin.</p>
+<button id="bclaim">Become admin (first time only)</button> <button id="bout1" class="g">Sign out</button>
+</div>
+<div id="app" style="display:none">
+<div class="tabs" id="tabs"></div>
+<section id="t_notice"></section><section id="t_ads" style="display:none"></section>
+<section id="t_crash" style="display:none"></section><section id="t_fb" style="display:none"></section>
+<button id="bout" class="g">Sign out</button>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb=supabase.createClient("https://aqbmgqjqhbptentuxshw.supabase.co","sb_publishable_CKkUqgAzWA9AwWK010ze-Q_SNNtpKnU");
+const $=id=>document.getElementById(id);
+function say(t,err){const m=$("msg");m.textContent=t;m.className="msg"+(err?" e":"");m.style.display="block";clearTimeout(say.t);say.t=setTimeout(()=>m.style.display="none",5000);}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+let cfg={};
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  $("login").style.display=session?"none":"block";$("claim").style.display="none";$("app").style.display="none";
+  $("who").textContent=session?session.user.email:"";
+  if(!session)return;
+  const {data:ok}=await sb.rpc("is_admin");
+  if(!ok){$("claim").style.display="block";return;}
+  $("app").style.display="block";await loadAll();
+}
+$("bin").onclick=async()=>{const {error}=await sb.auth.signInWithPassword({email:$("em").value.trim(),password:$("pw").value});if(error)say(error.message,1);else boot();};
+$("bup").onclick=async()=>{const {error}=await sb.auth.signUp({email:$("em").value.trim(),password:$("pw").value});if(error)say(error.message,1);else say("Account created. If asked, confirm your email, then sign in.");};
+$("bclaim").onclick=async()=>{const {data,error}=await sb.rpc("claim_admin");if(error||!data)say("Someone else is already admin.",1);else boot();};
+$("bout").onclick=$("bout1").onclick=async()=>{await sb.auth.signOut();boot();};
+const TABS=[["t_notice","Notice & Update"],["t_ads","Ads"],["t_crash","Crashes"],["t_fb","Feedback"]];
+function tabs(){$("tabs").innerHTML="";TABS.forEach(([id,n],i)=>{const b=document.createElement("button");b.textContent=n;b.className=i===tabs.cur?"on":"";b.onclick=()=>{tabs.cur=i;tabs();};$("tabs").appendChild(b);document.getElementById(id).style.display=i===tabs.cur?"block":"none";});}
+tabs.cur=0;
+async function loadAll(){tabs();await loadCfg();await loadList("crash_reports","t_crash","Crash reports",r=>`<div class="meta">${esc(new Date(r.created_at).toLocaleString())} · v${esc(r.version)} · ${esc(r.device)}</div><pre>${esc(r.report)}</pre>`);await loadList("feedback","t_fb","Feedback",r=>`<div class="meta">${esc(new Date(r.created_at).toLocaleString())} · v${esc(r.version)}${r.contact?" · "+esc(r.contact):""}</div><div>${esc(r.message)}</div>`);}
+async function loadCfg(){
+  const {data,error}=await sb.from("app_config").select("*").eq("id",1).single();if(error){say(error.message,1);return;}cfg=data;
+  $("t_notice").innerHTML=`<div class="card"><h2>Notice to all users</h2>
+  <label>Title</label><input id="nt" value="${esc(cfg.notice_title)}"><label>Message</label><textarea id="nb">${esc(cfg.notice_body)}</textarea>
+  <label>Link (optional)</label><input id="nu" value="${esc(cfg.notice_url)}">
+  <p class="meta">Status: ${cfg.notice_active?"ON (notice #"+cfg.notice_id+")":"OFF"}. Each user sees a notice once.</p>
+  <button id="npub">Publish notice</button> <button id="noff" class="g">Turn off</button></div>
+  <div class="card"><h2>Force update</h2><p class="meta">Users with a version number below this must update to continue. 0 = off.</p>
+  <label>Minimum version code</label><input id="mv" type="number" value="${cfg.min_version_code}">
+  <label>Update link (blank = latest release page)</label><input id="uu" value="${esc(cfg.update_url)}">
+  <label>Message</label><input id="fm" value="${esc(cfg.force_msg)}"><button id="usave">Save</button></div>`;
+  $("t_ads").innerHTML=`<div class="card"><h2>Ads</h2>
+  ${[["ads_banner","Top banner on home"],["ads_feed","Ads inside the news feed"],["ads_interstitial","Full-screen ad on app open"]].map(([k,n])=>`<div class="row"><span>${n}</span><input type="checkbox" class="sw" data-k="${k}" ${cfg[k]?"checked":""}></div>`).join("")}
+  <p class="meta">Changes apply the next time a user opens the app.</p><button id="asave">Save</button></div>`;
+  $("npub").onclick=()=>upd({notice_active:true,notice_id:cfg.notice_id+1,notice_title:$("nt").value,notice_body:$("nb").value,notice_url:$("nu").value},"Notice published");
+  $("noff").onclick=()=>upd({notice_active:false},"Notice turned off");
+  $("usave").onclick=()=>upd({min_version_code:parseInt($("mv").value||"0",10),update_url:$("uu").value,force_msg:$("fm").value},"Saved");
+  $("asave").onclick=()=>{const o={};document.querySelectorAll(".sw").forEach(c=>o[c.dataset.k]=c.checked);upd(o,"Saved");};
+}
+async function upd(o,ok){o.updated_at=new Date().toISOString();const {error}=await sb.from("app_config").update(o).eq("id",1);if(error)say(error.message,1);else{say(ok);loadCfg();}}
+async function loadList(table,el,title,fmt){
+  const {data,error}=await sb.from(table).select("*").order("created_at",{ascending:false}).limit(100);if(error){say(error.message,1);return;}
+  $(el).innerHTML=`<div class="card"><h2>${title} (${data.length})</h2>`+(data.length?data.map(r=>`<div class="item">${fmt(r)}<button class="r" data-id="${r.id}" data-t="${table}">Delete</button></div>`).join(""):"<p class='meta'>Nothing yet.</p>")+"</div>";
+  $(el).querySelectorAll("button.r").forEach(b=>b.onclick=async()=>{await sb.from(b.dataset.t).delete().eq("id",b.dataset.id);loadAll();});
+}
+boot();
+</script></body></html>
