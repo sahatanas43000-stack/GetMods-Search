@@ -8,6 +8,8 @@ COPY gm_engines.py /tmp/gm_engines.py
 COPY gm_patch.py /tmp/gm_patch.py
 COPY admin.html /tmp/admin.html
 COPY confirmed.html /tmp/confirmed.html
+COPY privacy.html /tmp/privacy.html
+COPY terms.html /tmp/terms.html
 USER root
 RUN find /usr/local/searxng -type f \( -name "searxng.svg" -o -name "favicon.svg" \) -exec cp /tmp/gm-logo.svg {} \; ; \
     find /usr/local/searxng -type f -name "sxng-*.css" -exec sh -c 'cat /tmp/gm-extra.css >> "$1"' _ {} \; ; \
@@ -17,7 +19,7 @@ RUN find /usr/local/searxng -type f \( -name "searxng.svg" -o -name "favicon.svg
       n=$(grep -n '{% endblock' "$f" | tail -1 | cut -d: -f1); \
       if [ -n "$n" ] && [ "$n" -gt 1 ]; then sed -i "$((n-1))r /tmp/gm_home.html" "$f"; else cat /tmp/gm_home.html >> "$f"; fi; \
     done; \
-    for d in $(find /usr/local/searxng -type d -path "*/searx/static"); do cp /tmp/admin.html "$d/admin.html"; cp /tmp/confirmed.html "$d/confirmed.html"; done; \
+    for d in $(find /usr/local/searxng -type d -path "*/searx/static"); do cp /tmp/admin.html "$d/admin.html"; cp /tmp/confirmed.html "$d/confirmed.html"; cp /tmp/privacy.html "$d/privacy.html"; cp /tmp/terms.html "$d/terms.html"; done; \
     python3 /tmp/gm_patch.py; \
     python3 /tmp/gm_engines.py; \
     find / -name "*.pyc" -path "*searx*" -not -path "/proc/*" -delete 2>/dev/null; \
